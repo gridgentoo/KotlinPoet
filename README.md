@@ -4,6 +4,7 @@
 
 Мне хотелось бы продемонстрировать ценность процесса кодогенерации, а также рассмотреть несколько практических примеров. Сам процесс выглядит примерно так:
 
+```
 FileSpec.builder("", "Presentation")
    .addComment("Code generating your way to happiness.")
    .addAnnotation(AnnotationSpec.builder(Author::class)
@@ -11,6 +12,7 @@ FileSpec.builder("", "Presentation")
        .useSiteTarget(FILE)
        .build())
    .build()
+```
 
 Это пример использования Kotlin Poet. Kotlin Poet — библиотека с хорошим API, которая генерирует Kotlin-код. Итак, что же мы здесь видим?
 
