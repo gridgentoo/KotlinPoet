@@ -1,4 +1,50 @@
-KotlinPoet
+## Генерация Kotlin-кода с использованием KotlinPoet
+
+### Кодогенерация для автоматизации
+
+Мне хотелось бы продемонстрировать ценность процесса кодогенерации, а также рассмотреть несколько практических примеров. Сам процесс выглядит примерно так:
+
+FileSpec.builder("", "Presentation")
+   .addComment("Code generating your way to happiness.")
+   .addAnnotation(AnnotationSpec.builder(Author::class)
+       .addMember("name", "%S", "Zac Sweers")
+       .useSiteTarget(FILE)
+       .build())
+   .build()
+
+Это пример использования Kotlin Poet. Kotlin Poet — библиотека с хорошим API, которая генерирует Kotlin-код. Итак, что же мы здесь видим?
+
+FileSpec.builder создаёт файл с именем “Presentation”.
+.addComment() — добавляет комментарий в сгенерированный код.
+.addAnnotation() — добавляет аннотацию с типом Author.
+.addMember() — добавляет переменную “name” с параметром, в нашем случае это “Zac Sweers”. %S — тип параметра.
+.useSiteTarget() — устанавливает SiteTarget.
+.build() — завершает описание кода, который будет генерироваться.
+
+После кодогенерации получается следующее:
+
+Presentation.kt
+// Code generating your way to happiness.
+@file:Author(name = "Zac Sweers")
+
+Результат кодогенерации — файл с названием, комментарием, аннотацией и именем автора. Сразу возникает вопрос: «Зачем мне нужно генерировать этот код, если я могу сделать это в пару простых действий?» Да, вы правы, но что, если мне нужна тысяча таких файлов с различными вариантами конфигураций? Что произойдёт, если мы начнём изменять значения в этом коде? Что, если у нас есть множество презентаций? Что, если нам предстоит множество конференций?
+
+conferences
+   .flatMap { it.presentations }
+   .onEach { (presentationName, comment, author) ->
+       FileSpec.builder("", presentationName)
+           .addComment(comment)
+           .addAnnotation(AnnotationSpec.builder(Author::class)
+               .addMember("name", "%S", author)
+               .useSiteTarget(FILE)
+               .build())
+           .build()
+   }
+
+В итоге мы придём к тому, что поддерживать такое количество файлов вручную станет просто невозможно — необходимо автоматизировать. Поэтому первое преимущество кодогенерации — избавление от рутинной работы.
+
+
+## KotlinPoet
 ==========
 
 `KotlinPoet` is a Kotlin and Java API for generating `.kt` source files.
